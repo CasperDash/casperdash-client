@@ -3,9 +3,9 @@ import { getLocalStorageValue } from '../services/localStorage';
 import {
 	getUserDetails,
 	updatePublicKeyFromSigner,
-	setPublicKey,
-	getConnectedAccountFromLocalStorage,
+	initConnectedAccountFromLocalStorage,
 	lockAccount,
+  setPublicKeyToStore,
 } from './userActions';
 
 jest.mock('../services/localStorage', () => {
@@ -60,25 +60,25 @@ describe('getTokenAddressFromLocalStorage', () => {
 	});
 });
 
-test('setPublicKey', () => {
-	expect(setPublicKey('test')).toEqual({
+test('setPublicKeyToStore', () => {
+	expect(setPublicKeyToStore('test')).toEqual({
 		type: 'USERS.SET_USER_ADDRESS',
 		payload: { publicKey: 'test', loginOptions: {} },
 	});
 });
 
-test('getConnectedAccountFromLocalStorage have account', () => {
+test('initConnectedAccountFromLocalStorage have account', () => {
 	const mockDispatch = jest.fn();
 	getLocalStorageValue.mockReturnValue({ publicKey: 'testpk' });
-	const value = getConnectedAccountFromLocalStorage()(mockDispatch);
+	const value = initConnectedAccountFromLocalStorage()(mockDispatch);
 	expect(mockDispatch).toHaveBeenCalled();
 	expect(value).toEqual('testpk');
 });
 
-test('getConnectedAccountFromLocalStorage do not have account', () => {
+test('initConnectedAccountFromLocalStorage do not have account', () => {
 	const mockDispatch = jest.fn();
 	getLocalStorageValue.mockReturnValue({});
-	const value = getConnectedAccountFromLocalStorage()(mockDispatch);
+	const value = initConnectedAccountFromLocalStorage()(mockDispatch);
 
 	expect(value).toEqual(undefined);
 });

@@ -1,10 +1,10 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import ContactIcon from 'assets/image/contact-icon.svg';
-//import SiteIcon from 'assets/image/file-icon.svg';
-import LockIcon from 'assets/image/lock-icon.svg';
-import ArrowIcon from 'assets/image/bold-arrow-icon.svg';
-import { lockAccount } from '../../../actions/userActions';
+import ContactIcon from '@cd/assets/image/contact-icon.svg';
+//import SiteIcon from '@cd/assets/image/file-icon.svg';
+import LockIcon from '@cd/assets/image/lock-icon.svg';
+import ArrowIcon from '@cd/assets/image/bold-arrow-icon.svg';
+import { onClearPublicKey, lockAccount } from '@cd/actions/userActions';
 import './index.scss';
 
 const SETTINGS = [
@@ -29,6 +29,16 @@ const SETTINGS = [
 	// },
 	{
 		name: 'Lock',
+		icon: {
+			className: 'cd_we_setting_lock',
+			img: <LockIcon />,
+		},
+		action: (dispatch) => {
+			dispatch(onClearPublicKey());
+		},
+	},
+	{
+		name: 'Delete all data',
 		icon: {
 			className: 'cd_we_setting_lock',
 			img: <LockIcon />,

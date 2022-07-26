@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { handleRequests } from '@redux-requests/core';
 import { createDriver } from '@redux-requests/axios';
-import { combineReducers, createStore, applyMiddleware } from 'redux';
+import { combineReducers, createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import APP_CONFIGS from '../config';
 import userReducer from './reducers/userReducer';
@@ -13,6 +13,7 @@ import deployReducer from './reducers/deploys';
 import stakeReducer from './reducers/stakes';
 import requestReducer from './reducers/request';
 import settingsReducer from './reducers/settings';
+import createWalletReducer, { initialState as createWalletInitialState } from "./reducers/createWallet";
 import { REQUEST } from './actionTypes';
 
 export const initialState = {
@@ -41,6 +42,9 @@ export const initialState = {
 	nfts: {
 		address: [],
 	},
+  createWallet: {
+    ...createWalletInitialState
+  }
 };
 
 const setLoadingStatus = (actionType) => {
@@ -85,7 +89,11 @@ const main = combineReducers({
 	request: requestReducer,
 	settings: settingsReducer,
 	nfts: nftsReducer,
+  createWallet: createWalletReducer
 });
 
-const store = createStore(main, initialState, applyMiddleware(thunk, ...requestsMiddleware));
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const store = createStore(main, initialState, composeEnhancers(
+  applyMiddleware(thunk, ...requestsMiddleware)
+));
 export default store;
